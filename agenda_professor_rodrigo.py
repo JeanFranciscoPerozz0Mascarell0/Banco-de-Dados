@@ -56,7 +56,7 @@ else:
 
 class CrudApp:
 
-   def __init__(self, window):
+    def __init__(self, window):
         self.window = window
         self.window.title('CRUD usando Python e MySQL')
         # Conectar ao banco de dados MySQL
@@ -86,7 +86,7 @@ class CrudApp:
         self.update_btn = Button(self.window, text='Update', command=self.update_data_window)
         self.update_btn.pack()
 
-        self.delete_btn = Button(self.window, text='Delete', command=self.delete_data_window)
+        self.delete_btn = Button(self.window, text='Delete', command=self.delete_banco)
         self.delete_btn.pack()
 
         self.report_btn = Button(self.window, text='Gerar Relatorio', command=self.generate_report)
@@ -97,7 +97,7 @@ class CrudApp:
 
         #alinhar os botoes
         self.button = [self.add_btn, self.update_btn, self.delete_btn, self.report_btn, self.add_grupo_btn]
-        self.align_button()
+        self.align_buttons()
 
         #Atualizar a tabela inicialmente
         self.fetch_data()
@@ -178,7 +178,7 @@ class CrudApp:
         nome_label = Label(add_window, text='Nome: ')
         nome_label.grid(row=0, column=0, padx=10, pady=10)
         nome_entry = Entry(add_window)
-        nome_entry.grid(row=0, column=, padx=10, pady=10)
+        nome_entry.grid(row=0, column=0, padx=10, pady=10)
         
         telefone_label = Label(add_window, text='Telefone: ')
         telefone_label.grid(row=1, column=0, padx=10, pady=10)
@@ -275,23 +275,24 @@ class CrudApp:
         #Recupera os dadso atuaçozados da tabela 'contatos' usando a função 'fetch_data'
         self.fetch_data()
         
-    def delete_data(self):
+    def delete_banco(self):
         #Obter o item selecionado
-    item = self.table.selection()[0]
-    #Pegar o ID do contato selecionado
-    data = self.table.item(item,'values')
-    id = data[0]
+        item = self.table.selection()[0]
+        #Pegar o ID do contato selecionado
+        data = self.table.item(item,'values')
+        id = data[0]
     
     
     
-    #Verificar se o usuario realmente deseja excluir o registro
-    if messagebox.askyesno('Confirmação', 'Tem certeza de que deseja excluir o registro?'):
-        #Deletar dados do banco de dados
-        cursor = self.db.cursor()
-        cursor.execute('DELETE FROM contatos WHERE id=%s', (id,))
-        #Passe o ID como uma tupla de um elemento
-        self.db.commit()
-        self.fetch_data()
+        #Verificar se o usuario realmente deseja excluir o registro
+        if messagebox.askyesno('Confirmação', 'Tem certeza de que deseja excluir o registro?'):
+            
+            #Deletar dados do banco de dados
+            cursor = self.db.cursor()
+            cursor.execute('DELETE FROM contatos WHERE id=%s', (id,))
+            #Passe o ID como uma tupla de um elemento
+            self.db.commit()
+            self.fetch_data()
 
 if __name__== "__main__":
     window = Tk()
